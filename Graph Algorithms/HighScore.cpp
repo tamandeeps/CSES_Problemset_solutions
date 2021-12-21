@@ -5,75 +5,76 @@ using namespace std;
  
 const int INF = 1e17;
 const int NINF = INF*(-1);
+
+struct triplet
+ {
+    int u;
+    int v;
+    int wt;
+ };
  
-struct triplet{
-    int first;
-    int second;
-    int third;
-};
+ int n,m;
+ vector<triplet> edges;
+ vector<int> d;
+
  
-int n, m;   
-vector<triplet> edges;
-vector<int> dist;
- 
-void bellman_ford()
+
+ void bellmanFord()
+ {
+  d[1]=0;
+  for(int i=0;i<n-1;i++)
+  {
+   for(auto e:edges)
+   {
+       int u=e.u;
+       int v=e.v;
+       int wt=e.wt;
+       if(d[u]==INF)
+        continue;
+    d[v]=min(d[v],d[u]+wt);
+    d[v]=max(d[v],NINF);
+   }  
+}
+for(int i=0;i<n-1;i++)
 {
-    for(int i = 1; i < n; ++i)
+    for(auto e: edges)
     {
-        for(auto e: edges)
-        {
-            int u = e.first;
-            int v = e.second;
-            int d = e.third;
-            if(dist[u] == INF) continue;
-            dist[v] = min(dist[v], d+dist[u]);
-            dist[v] = max(dist[v], NINF);
-        }
-    } // n relaxations
- 
-    for(int i = 1; i < n; ++i)
-    {
-        for(auto e: edges)
-        {
-            int u = e.first;
-            int v = e.second;
-            int d = e.third;
-            if(dist[u] == INF) continue;
-            dist[v] = max(dist[v], NINF);
-            if(dist[u]+d < dist[v])
-            {
-                dist[v] = NINF;
-            }
-        }
+        int u=e.u;
+        int v=e.v;
+        int wt=e.wt;
+        if(d[u]==INF)
+            continue;
+        d[v]=max(d[v],NINF);
+        if(d[v]>d[u]+wt)
+            d[v]=NINF;
     }
 }
- 
- 
+
+ }
+
 int32_t main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cin >> n >> m;
-    dist.resize(n+1);
-    edges.resize(m);
-    for(int i = 0; i < m; ++i)
+ cin>>n>>m;
+  edges.resize(m);
+  d.resize(n+1,INF);
+  for(int i=0;i<m;i++)
+  {
+    int x,y,z;
+    cin>>x>>y>>z;
+    z=-1*z;
+    edges[i].u=x;
+    edges[i].v=y;
+    edges[i].wt=z;
+  }
+  bellmanFord(); 
+  int maximum=0;
+  if(d[n]==NINF)
     {
-        struct triplet inp;
-        cin >> inp.first >> inp.second >> inp.third;
-        inp.third *= -1; 
-        edges[i] = inp;
-    }
- 
-    for(int i = 2; i <= n; ++i)
-    {
-        dist[i] = INF;
-    }
- 
-    bellman_ford();
-    if(dist[n] == NINF)
-    {
-        cout << -1 << endl;
+        cout<<"-1";
         return 0;
-    } 
-    cout << dist[n] * (-1) << endl;
+    }
+   
+  
+  cout<<-1*d[n];
+
 }
