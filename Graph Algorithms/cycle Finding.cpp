@@ -1,96 +1,74 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define pb push_back
-const int maxN=1e5+1;
-const int INF=1e9;
-int n;
-int m;
-bool iscycle=false;
-vector<int> p;
+#define int long long int
 
- struct triplet 
- {
-    int u;
-     int v;
-     int dist;
- };
-
- vector<triplet> edges;
- vector<int> d;
-
-void bellmanFord()
+struct triplet
 {
- d[1]=0;
- p.resize(n+1,-1);
- for(int i=0;i<n-1;i++)
- {
-    for(auto e:edges)
-    {
-        int u=e.u;
-        int v=e.v;
-        int dist=e.dist;
-        if(d[u]==INF)
-            continue;
-       if(d[v]>d[u]+dist)
-        {
-            d[v]=d[u]+dist;
-        }
-    }
- }
- int vertex;
-  for(auto e:edges)
-    {
-        int u=e.u;
-        int v=e.v;
-        int dist=e.dist;
-        if(d[u]==INF)
-            continue;
-        
-        if(d[v]>d[u]+dist)
-        {
-            iscycle=true;
-            vertex=v;
-        }
+    int u;
+    int v;
+    int dist;
+};
 
-    }
-    if(iscycle)
+vector<triplet> edges;
+vector<int> d,p;
+int n,m;
+
+void ModifiedBellmanFord()
+{
+    int x;
+    for(int i=0;i<n;i++)
     {
-        cout<<"YES"<<endl;
-        vector<int> path;
-        path.pb(vertex);
-        int i=p[vertex];
-        while(i!=vertex)
+         x=-1;
+        for(auto e:edges)
         {
-            path.pb(i);
-            i=p[i];
+            int u=e.u;
+            int v=e.v;
+            int dist=e.dist;
+            if(d[u]+dist<d[v])
+            {
+                d[v]=d[u]+dist;
+                p[v]=u;
+                x=v;
+            }
+
         }
-        path.pb(vertex);
-        reverse(path.begin(),path.end());
-        for(auto i:path)
-            cout<<i<<" ";
     }
-    else
-        cout<<"NO";
+    if(x==-1)
+    {
+     cout<<"NO";
+     return;
+    }
+    for(int i=0;i<n-2;i++)
+    {
+       x=p[x];
+    }
+    vector<int> cycle;
+    for(int v=x; ;v=p[v])
+    {
+        cycle.pb(v);
+        if(v==x and cycle.size()>1)
+            break;
+    }
+    cout<<"YES"<<endl;
+    reverse(cycle.begin(),cycle.end());
+    for(auto i:cycle)
+        cout<<i<<" ";
 
 }
 
- 
- 
-int main()
+int32_t main()
 {
     cin>>n>>m;
     edges.resize(m);
-    d.resize(n+1,INF);
+    d.resize(n+1,0);
+    p.resize(n+1,-1);
     for(int i=0;i<m;i++)
     {
-    	int x,y,z;
-    	cin>>x>>y>>z;
-        edges[i].u=x;
-        edges[i].v=y;
-        edges[i].dist=z;
-    	
+        int x,y,z;
+        cin>>x>>y>>z;
+        edges[i]={x,y,z};
     }
-    bellmanFord();
-   
-	return 0;
+    ModifiedBellmanFord();
+    return 0;
 }
