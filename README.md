@@ -1,2 +1,4 @@
 # CSES_Problemset_solutions
-This repo contains all the solutions of CSES problem set with explanations.
+This repository contains solutions to the CSES Problemset.
+All the codes are well commented for explanation.
+New solutions are updated as and when the owner solves the problem.
