@@ -27,7 +27,7 @@ int main()
 			}
 			if(i>0 and j>=s[i])
 			{
-				dp[i][j]=max(dp[i-1][j],h[i-1]+dp[i-1][j-s[i]]);
+				dp[i][j]=max(dp[i-1][j],h[i]+dp[i-1][j-s[i]]);
 			//	cout<<dp[i][j]<<endl;
 			}
 			else
