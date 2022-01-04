@@ -7,15 +7,18 @@ void solve()
 {
 	int n;
 	cin>>n;
+	int dp[2][n+1];
+	dp[0][1]=1;
 	dp[1][1]=3;
 	for(int i=2;i<=n;i++)
 	{
-		for(int j=0;j<i;j++)
+		for(int j=0;j<=i;j++)
 		{
-           dp[i][i]+=(dp[i][j]+3)%mod;
+			dp[0][i]=dp[0][j]%mod;
+			dp[1][i]
 		}
 	}
-	cout<<dp[n][n];
+
 }
 
 int main()
